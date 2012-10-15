@@ -4,8 +4,8 @@ import os
 import sys
 import subprocess
 
-from distutils.core import setup
-from distutils.command.install import install
+from setuptools import setup
+from setuptools.command.install import install
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -136,7 +136,7 @@ class node_install(install):
 
 setup(
     name='virtual-node',
-    version='0.0.1a',
+    version='0.0.1',
     description='Install node.js into your virtualenv',
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
