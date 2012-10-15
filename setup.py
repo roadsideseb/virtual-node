@@ -59,8 +59,8 @@ class node_install(install):
         # execute
         try:
             proc = subprocess.Popen(
-                cmd, stderr=subprocess.STDOUT, stdin=None, stdout=stdout,
-                cwd=cwd, env=env, shell=False)
+                [' '.join(cmd)], stderr=subprocess.STDOUT, stdin=None, stdout=stdout,
+                cwd=cwd, env=env, shell=True)
         except Exception:
             e = sys.exc_info()[1]
             logger.error("Error %s while executing command %s" % (e, cmd_desc))
