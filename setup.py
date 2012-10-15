@@ -2,14 +2,10 @@
 
 import os
 import sys
-import shutil
-import zipfile
 import subprocess
-from distutils.command.install import install
 
-from urllib2 import urlopen
-from cStringIO import StringIO
 from distutils.core import setup
+from distutils.command.install import install
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -140,7 +136,7 @@ class node_install(install):
 
 setup(
     name='virtual-node',
-    version='0.0.1',
+    version='0.0.1a',
     description='Install node.js into your virtualenv',
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
