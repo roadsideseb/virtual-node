@@ -1,7 +1,7 @@
 virtual-node
 ============
 
-This package is a wrapper around the `nose.js`_ sources and provides a
+This package is a wrapper around the `node.js`_ sources and provides a
 convenient way to install it directly into your ``virtualenv`` instead
 of globally. I created this package to play around with a simple 
 installation for Django projects that us `django-compressor`_'s
@@ -17,6 +17,7 @@ I am using this in combination with `virtual-less`_ which installs the
 
 .. _`less`: http://lesscss.org
 .. _`node.js`: http://nodejs.org/
+.. _`nodeenv`: http://github.com/ekalinin/nodeenv
 .. _`virtual-less`: http://github.com/elbaschid/virtual-less
 .. _`django-compressor`: https://github.com/jezdez/django_compressor
 
