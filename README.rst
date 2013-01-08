@@ -4,7 +4,7 @@ virtual-node
 This package is a wrapper around the `node.js`_ sources and provides a
 convenient way to install it directly into your ``virtualenv`` instead
 of globally. I created this package to play around with a simple 
-installation for Django projects that us `django-compressor`_'s
+installation for Django projects that use `django-compressor`_'s
 precompiler to generate CSS from `less`_ files.
 
 The install routine used in ``setup.py`` is adapted from the
@@ -48,6 +48,6 @@ request with your changes. I'd be happy to include them.
 License
 -------
 
-Oscar is released under the permissive `New BSD license`_.
+This package is released under the permissive `New BSD license`_.
 
 .. _`New BSD license`: https://github.com/elbaschid/virtual-less/blob/master/LICENSE
