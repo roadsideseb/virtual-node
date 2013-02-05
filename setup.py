@@ -1,13 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import sys
+import logging
 import subprocess
 
 from setuptools import setup
 from setuptools.command.install import install
 
-import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("virtual-node")
 
@@ -18,7 +19,15 @@ class node_install(install):
     verbose = False
 
     def run(self):
+        versions = self.distribution.get_version().rsplit('-', 1)
+        if len(versions) == 2:
+            self.version = versions[1]
+        else:
+            self.version = self.default_version
+
         self.install_node(self.env_dir)
+        self.run_npm(self.env_dir)
+        self.run_bower(self.env_dir)
 
     def get_node_src_url(self, version, postfix=''):
         node_name = 'node-v%s%s' % (version, postfix)
@@ -85,18 +94,35 @@ class node_install(install):
 
         return proc.returncode, all_output
 
+    def run_npm(self, env_dir):
+        if os.path.exists("%s%s" % (env_dir, "package.json")):
+            self.run_cmd(['npm', 'install'], env_dir)
+        else:
+            logger.warning("Could not find 'package.json', ignoring NPM dependencies.")
+
+    def run_bower(self, env_dir):
+        bower_bin = "%s/bin/bower" % env_dir
+        if not os.path.exists(bower_bin):
+            logger.warning("Could not find 'bower' executable, ignoring it")
+            return
+
+        if os.path.exists("%s%s" % (env_dir, "components.json")):
+            self.run_cmd(['bower', 'install'], env_dir)
+        else:
+            logger.warning("Could not find 'components.json', ignoring bower dependencies.")
 
     def install_node(self, env_dir, version=None):
         """
         Download source code for node.js, unpack it
         and install it in virtual environment.
         """
-        version = version or self.default_version
-        logger.info(' * Install node.js (%s' % version,
-                             extra=dict(continued=True))
+        logger.info(
+            ' * Install node.js (%s' % self.version,
+            extra={'continued': True}
+        )
 
-        node_name = 'node-v%s' % (version)
-        node_url = self.get_node_src_url(version)
+        node_name = 'node-v%s' % (self.version)
+        node_url = self.get_node_src_url(self.version)
 
         src_dir = os.path.join(env_dir, 'src')
         node_src_dir = os.path.join(src_dir, node_name)
@@ -115,7 +141,7 @@ class node_install(install):
         except OSError:
             postfix = '-RC1'
             logger.info('%s) ' % postfix, extra=dict(continued=True))
-            new_node_url = self.get_node_src_url(version, postfix)
+            new_node_url = self.get_node_src_url(self.version, postfix)
             cmd[cmd.index(node_url)] = new_node_url
             self.run_cmd(cmd, env_dir)
 
@@ -134,13 +160,15 @@ class node_install(install):
 
         logger.info(' done.')
 
+
 setup(
     name='virtual-node',
-    version='0.0.1',
+    version='0.0.2-0.8.11',
     description='Install node.js into your virtualenv',
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
     url='http://github.com/elbaschid/virtual-node',
+    packages=['virtual_node'],
     long_description=open('README.rst', 'r').read(),
     classifiers=[
         'Development Status :: 3 - Alpha',
