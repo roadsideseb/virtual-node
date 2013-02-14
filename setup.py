@@ -168,7 +168,6 @@ setup(
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
     url='http://github.com/elbaschid/virtual-node',
-    packages=['virtual_node'],
     long_description=open('README.rst', 'r').read(),
     classifiers=[
         'Development Status :: 3 - Alpha',
