@@ -157,6 +157,8 @@ class node_install(install):
         self.run_cmd(['make'], node_src_dir)
         logger.info('.', extra=dict(continued=True))
         self.run_cmd(['make install'], node_src_dir)
+        logger.info('.', extra=dict(continued=True))
+        self.run_cmd(['rm -rf "%s"' % node_src_dir])
 
         logger.info(' done.')
 
