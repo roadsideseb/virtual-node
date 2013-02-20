@@ -184,6 +184,7 @@ setup(
     license='BSD',
     cmdclass={
         'install': node_install,
-        'develop': node_install, # required for development mode
+        'develop': node_install,
+        'bdist_egg': node_install,
     }
 )
