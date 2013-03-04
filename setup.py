@@ -6,14 +6,32 @@ import sys
 import logging
 import subprocess
 
-from setuptools import setup
-from setuptools.command.install import install
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("virtual-node")
 
+try:
+    import setuptools
+except ImportError:
+    from distribute_setup import use_setuptools
+    use_setuptools()
 
-class node_install(install):
+from setuptools import setup
+from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
+
+from distutils.command.build import build as _build
+
+
+class node_bdist_egg(_bdist_egg):
+
+    #def __init__(self, *args, **kwargs):
+    #    _bdist_egg.__init__(self, *args, **kwargs)
+
+    def run(self):
+        self.run_command("build")
+        _bdist_egg.run(self)
+
+
+class node_build(_build):
     env_dir = os.environ['VIRTUAL_ENV']
     default_version = '0.8.11'
     verbose = False
@@ -183,8 +201,7 @@ setup(
     ],
     license='BSD',
     cmdclass={
-        'install': node_install,
-        'develop': node_install,
-        'bdist_egg': node_install,
+        'build': node_build,
+        'bdist_egg': node_bdist_egg,
     }
 )
