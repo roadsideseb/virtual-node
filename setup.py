@@ -53,9 +53,25 @@ class node_build(_build):
         else:
             self.version = self.default_version
 
-        self.install_node(self.env_dir)
+        # Only install node if the version we need isn't already installed.
+        if self.check_for_node():
+            logger.info('Skipping NodeJS installation, v{0} is already installed.'.format(self.version))
+        else:
+            self.install_node(self.env_dir)
         self.run_npm(self.env_dir)
         self.run_bower(self.env_dir)
+
+    def check_for_node(self):
+        """
+            Check that the required version of Node is installed in the virtual
+            env. If it is, there's no need to re-install.
+        """
+        node_path = os.path.join(self.env_dir, 'bin', 'node')
+        if os.path.exists(node_path):
+            version = self.run_cmd([node_path, '--version'])[1][0]
+            if 'v{0}'.format(self.version) == version:
+                return True
+        return False
 
     def get_node_src_url(self, version, postfix=''):
         node_name = 'node-v%s%s' % (version, postfix)
