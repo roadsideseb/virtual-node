@@ -1,4 +1,4 @@
-*.swp
+*.sw[po]
 *.py[co]
 .vagrant
 MANIFEST

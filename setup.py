@@ -214,7 +214,8 @@ setup(
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
     url='http://github.com/elbaschid/virtual-node',
-    long_description=open('README.rst', 'r').read(),
+    long_description="%s\n\n%s" % (open('README.rst').read(),
+                                   open('CHANGELOG.rst').read()),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',

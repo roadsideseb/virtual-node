@@ -1,6 +1,12 @@
 virtual-node
 ============
 
+Continuous integration status:
+
+.. image:: https://secure.travis-ci.org/elbaschid/virtual-node.png
+    :target: http://travis-ci.org/#!/elbaschid/virtual-node
+
+
 This package is a wrapper around the `node.js`_ sources and provides a
 convenient way to install it directly into your ``virtualenv`` instead
 of globally. I created this package to play around with a simple 
@@ -25,16 +31,27 @@ I am using this in combination with `virtual-less`_ which installs the
 Installation
 ------------
 
+.. warning:: This will download the node.js sources and compile it into your
+    virtualenv. Make sure that you have all required build dependencies for
+    node.js installed before installing virtual-node. The installation will
+    take quite a long time to run for the first time around, so have a coffee
+    or a beer handy.
+
 Installing the ``node`` into your virtual environment is as easy as::
 
     $ pip install virtual-node
 
-that should be it. You should now be able to run ``node`` from within
+That should be it. You should now be able to run ``node`` from within
 your virtual environment even if you have it globally installed. You
 can make sure that this is the case::
 
     $ which node
     /home/elbaschid/.virtualenvs/lessc-test/bin/node
+
+.. note:: virtual-node is explicitly meant to be installed into a virtualenv
+    and not into your global environment. This has not been tested and will
+    most likely not work or cause problems. Only try it if you know what you
+    are doing.
 
 Issues & Contributions
 ----------------------
