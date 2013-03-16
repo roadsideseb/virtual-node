@@ -200,6 +200,7 @@ setup(
         'Topic :: Software Development :: Libraries',
     ],
     license='BSD',
+    zip_safe=False,
     cmdclass={
         'build': node_build,
         'bdist_egg': node_bdist_egg,
