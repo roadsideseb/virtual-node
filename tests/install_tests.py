@@ -30,5 +30,6 @@ class MockLoggingHandler(logging.Handler):
 class TestNode(TestCase):
 
     def test_is_installed(self):
-        output = subprocess.check_output(['node', '--version'])
+        proc = subprocess.Popen(['node', '--version'], stdout=subprocess.PIPE)
+        output = proc.stdout.read()
         self.assertEquals(output.strip(), 'v0.8.11')
