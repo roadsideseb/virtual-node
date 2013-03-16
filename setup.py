@@ -18,20 +18,20 @@ except ImportError:
 from setuptools import setup
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 
-from distutils.command.build import build as _build
-
-
+# prevent a SandboxViolation error when using the 'bdist_egg' command
+# this hack to prevent the violation has be borrowed from the distribute
+# package's distribute_setup.py
+# https://bitbucket.org/tarek/distribute/src/fa1cb0b8f46af5debe0d44890e497b1c698b3c74/distribute_setup.py#cl-227
 from setuptools.sandbox import DirectorySandbox
 def violation(*args):
     pass
 DirectorySandbox._old = DirectorySandbox._violation
 DirectorySandbox._violation = violation
 
+from distutils.command.build import build as _build
+
 
 class node_bdist_egg(_bdist_egg):
-
-    #def __init__(self, *args, **kwargs):
-    #    _bdist_egg.__init__(self, *args, **kwargs)
 
     def run(self):
         self.run_command("build")
@@ -39,11 +39,14 @@ class node_bdist_egg(_bdist_egg):
 
 
 class node_build(_build):
-    env_dir = os.environ['VIRTUAL_ENV']
+    env_dir = os.environ.get('VIRTUAL_ENV')
     default_version = '0.8.11'
     verbose = False
 
     def run(self):
+        if not self.env_dir:
+            raise KeyError("no virtualenv specified in 'VIRTUAL_ENV' required "
+                           "to proceed with install")
         versions = self.distribution.get_version().rsplit('-', 1)
         if len(versions) == 2:
             self.version = versions[1]
