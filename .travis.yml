@@ -7,6 +7,7 @@ env:
   - SETUP_COMMAND="build"
   - SETUP_COMMAND="-q bdist_egg --dist-dir /tmp/easy_install/virtual-node"
 install:
+  - pip install -r requirements.txt
   - python setup.py $SETUP_COMMAND
 script:
   - nosetests
