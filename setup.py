@@ -21,6 +21,13 @@ from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 from distutils.command.build import build as _build
 
 
+from setuptools.sandbox import DirectorySandbox
+def violation(*args):
+    pass
+DirectorySandbox._old = DirectorySandbox._violation
+DirectorySandbox._violation = violation
+
+
 class node_bdist_egg(_bdist_egg):
 
     #def __init__(self, *args, **kwargs):

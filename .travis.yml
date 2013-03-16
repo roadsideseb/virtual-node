@@ -5,6 +5,7 @@ python:
 env:
   - SETUP_COMMAND="install"
   - SETUP_COMMAND="build"
+  - SETUP_COMMAND="-q bdist_egg --dist-dir /tmp/easy_install/virtual-node"
 install:
   - python setup.py $SETUP_COMMAND
 script:
