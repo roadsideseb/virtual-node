@@ -1,0 +1,7 @@
+{
+  "name": "virtual-node",
+  "version": "0.0.3",
+  "engines": {
+    "node": "==0.8.11"
+  }
+}

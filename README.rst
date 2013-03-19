@@ -53,6 +53,38 @@ can make sure that this is the case::
     most likely not work or cause problems. Only try it if you know what you
     are doing.
 
+Install specific version of ``node``
+++++++++++++++++++++++++++++++++++++
+
+Starting with version **0.0.3** it is possible to specify the version of
+``node`` using the ``NPM`` packaging format ``package.json``. To use this
+feature you need to specify the current project directory in the environment
+variable ``PROJECT_DIR`` **before** you install ``virtual-node``. You can
+simply export it on the commandline::
+
+    $ export PROJECT_DIR=/path/to/my/project
+
+or define it in your ``virtualenv``/``virtualenvwrapper`` scripts.
+
+During installation, the setup script will attempt to retrieve the desired
+version of node from a file named ``package.json`` which is also used by
+``NPM`` [and is explained in detail on their website](https://npmjs.org/doc/json.html).
+
+A sample file to specify version ``0.10.0`` would look like this::
+
+    {
+      "name": "my-project",
+      "version": "0.0.1",
+      "engines": {
+        "node": "==0.10.0"
+      }
+    }
+
+The version of the engine to be used is the version that ``virtual-node``
+will use to install ``node``. **Note:** you have to specify an exact version
+(using ``==``) otherwise the version will be ignored.
+
+
 Issues & Contributions
 ----------------------
 

@@ -3,6 +3,9 @@
 
 import os
 import sys
+import json
+import urllib
+import tarfile
 import logging
 import subprocess
 
@@ -41,17 +44,31 @@ class node_bdist_egg(_bdist_egg):
 class node_build(_build):
     env_dir = os.environ.get('VIRTUAL_ENV')
     default_version = '0.8.11'
+    project_dir = os.environ.get('PROJECT_DIR')
     verbose = False
+
+    def get_node_version(self):
+        if not self.project_dir:
+            return self.default_version
+        package_file = os.path.join(self.project_dir, 'package.json')
+        try:
+            package_json = json.load(open(package_file))
+        except (IOError, ValueError):
+            logger.debug(
+                "cannot find custom node version in package.json, using default"
+            )
+        else:
+            node_version = package_json.get('engines', {}).get('node', '')
+            if node_version.startswith('=='):
+                return node_version.replace('==', '')
+        return self.default_version
 
     def run(self):
         if not self.env_dir:
             raise KeyError("no virtualenv specified in 'VIRTUAL_ENV' required "
                            "to proceed with install")
-        versions = self.distribution.get_version().rsplit('-', 1)
-        if len(versions) == 2:
-            self.version = versions[1]
-        else:
-            self.version = self.default_version
+
+        self.version = self.get_node_version()
 
         # Only install node if the version we need isn't already installed.
         if self.check_for_node():
@@ -175,19 +192,18 @@ class node_build(_build):
         if not os.path.exists(node_src_dir):
             os.makedirs(node_src_dir)
 
-        cmd = [
-            'curl', '--silent', '-L', node_url, '|',
-            'tar', 'xzf', '-', '-C', src_dir,
-        ]
         try:
-            self.run_cmd(cmd, env_dir)
+            filename, __ = urllib.urlretrieve(node_url)
+        except IOError:
+            raise IOError(
+                "cannot download node source from '%s'" % (node_url,)
+            )
+        else:
             logger.info(') ', extra=dict(continued=True))
-        except OSError:
-            postfix = '-RC1'
-            logger.info('%s) ' % postfix, extra=dict(continued=True))
-            new_node_url = self.get_node_src_url(self.version, postfix)
-            cmd[cmd.index(node_url)] = new_node_url
-            self.run_cmd(cmd, env_dir)
+
+        tarball = tarfile.open(filename, 'r:gz')
+        tarball.extractall(src_dir)
+        tarball.close()
 
         logger.info('.', extra=dict(continued=True))
 
@@ -209,7 +225,7 @@ class node_build(_build):
 
 setup(
     name='virtual-node',
-    version='0.0.3-0.8.11',
+    version='0.0.3',
     description='Install node.js into your virtualenv',
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
