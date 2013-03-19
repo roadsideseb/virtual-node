@@ -225,7 +225,7 @@ class node_build(_build):
 
 setup(
     name='virtual-node',
-    version='0.0.3',
+    version='0.0.4',
     description='Install node.js into your virtualenv',
     author='Sebastian Vetter',
     author_email='sebastian@roadside-developer.com',
