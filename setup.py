@@ -156,10 +156,20 @@ class node_build(_build):
         return proc.returncode, all_output
 
     def run_npm(self, env_dir):
-        if os.path.exists("%s%s" % (env_dir, "package.json")):
-            self.run_cmd(['npm', 'install'], env_dir)
-        else:
-            logger.warning("Could not find 'package.json', ignoring NPM dependencies.")
+        package_file = os.path.join(self.project_dir, 'package.json')
+        try:
+            package = json.load(open(package_file))
+        except IOError:
+            logger.warning("Could not find 'package.json', ignoring NPM "
+                           "dependencies.")
+            return
+
+        for name, version in package.get('dependencies', {}).items():
+            # packages are installed globally to make sure that they are
+            # installed in the virtualenv rather than the current directory.
+            # it is also necessary for packages containing scripts, e.g. less
+            dep_name = '%s@%s' % (name, version)
+            self.run_cmd(['npm', 'install', '-g', dep_name], self.project_dir)
 
     def run_bower(self, env_dir):
         bower_bin = "%s/bin/bower" % env_dir
@@ -167,10 +177,12 @@ class node_build(_build):
             logger.warning("Could not find 'bower' executable, ignoring it")
             return
 
-        if os.path.exists("%s%s" % (env_dir, "components.json")):
-            self.run_cmd(['bower', 'install'], env_dir)
+        components_json = os.path.join(self.project_dir, 'components.json')
+        if os.path.exists(components_json):
+            self.run_cmd(['bower', 'install'], self.project_dir)
         else:
-            logger.warning("Could not find 'components.json', ignoring bower dependencies.")
+            logger.warning("Could not find 'components.json', ignoring bower "
+                           "dependencies.")
 
     def install_node(self, env_dir, version=None):
         """
