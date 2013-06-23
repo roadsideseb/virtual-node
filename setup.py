@@ -32,7 +32,7 @@ DirectorySandbox._old = DirectorySandbox._violation
 DirectorySandbox._violation = violation
 
 from distutils.command.build import build as _build
-
+from distutils.version import StrictVersion
 
 class node_bdist_egg(_bdist_egg):
 
@@ -93,7 +93,7 @@ class node_build(_build):
     def get_node_src_url(self, version, postfix=''):
         node_name = 'node-v%s%s' % (version, postfix)
         tar_name = '%s.tar.gz' % (node_name)
-        if version > "0.5.0":
+        if StrictVersion(version) > StrictVersion("0.5.0"):
             node_url = 'http://nodejs.org/dist/v%s/%s' % (version, tar_name)
         else:
             node_url = 'http://nodejs.org/dist/%s' % (tar_name)
