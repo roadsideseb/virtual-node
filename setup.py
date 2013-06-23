@@ -44,7 +44,7 @@ class node_bdist_egg(_bdist_egg):
 class node_build(_build):
     env_dir = os.environ.get('VIRTUAL_ENV')
     default_version = '0.8.11'
-    project_dir = os.environ.get('PROJECT_DIR')
+    project_dir = os.environ.get('PROJECT_DIR', '')
     verbose = False
 
     def get_node_version(self):
