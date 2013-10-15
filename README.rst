@@ -42,11 +42,18 @@ Installing the ``node`` into your virtual environment is as easy as::
 
     $ pip install virtual-node
 
-That should be it. You should now be able to run ``node`` from within
-your virtual environment even if you have it globally installed. You
-can make sure that this is the case::
+If you had node.js installed globally previous to installing ``virtual-node``, 
+running ``npm`` or ``node`` will still point to your global installation. 
+To make sure you're using the newly installed ``node``, deactivate your 
+virtualenv and re-activate it.
+
+You can check that ``virtual-node`` has ``node`` pointing to the right place by 
+running ``which node`` in your virtual environment:
 
     $ which node
+
+Your output should look something like:
+
     /home/elbaschid/.virtualenvs/lessc-test/bin/node
 
 .. note:: virtual-node is explicitly meant to be installed into a virtualenv
