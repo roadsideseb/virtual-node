@@ -108,3 +108,9 @@ License
 This package is released under the permissive `New BSD license`_.
 
 .. _`New BSD license`: https://github.com/elbaschid/virtual-less/blob/master/LICENSE
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/elbaschid/virtual-node/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
