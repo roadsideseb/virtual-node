@@ -32,4 +32,4 @@ class TestNode(TestCase):
     def test_is_installed(self):
         proc = subprocess.Popen(['node', '--version'], stdout=subprocess.PIPE)
         output = proc.stdout.read()
-        self.assertEquals(output.strip(), 'v0.8.11')
+        self.assertEquals(output.strip(), 'v0.10.26')
