@@ -2,6 +2,15 @@
 Changelog
 =========
 
+0.1.0
+-----
+
+* Add the ability to specify the version of node as an environmental variable
+  using ``NODE_VERSION``. This makes it a lot easier to define the version of
+  node that will be installed.
+* Update the default version of node to **0.10.26**, the most recent version at
+  the time of writing.
+
 0.0.4
 -----
 

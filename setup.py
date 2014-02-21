@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("virtual-node")
 
 try:
-    import setuptools
+    import setuptools  # noqa
 except ImportError:
     from distribute_setup import use_setuptools
     use_setuptools()
@@ -26,13 +26,17 @@ from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 # package's distribute_setup.py
 # https://bitbucket.org/tarek/distribute/src/fa1cb0b8f46af5debe0d44890e497b1c698b3c74/distribute_setup.py#cl-227
 from setuptools.sandbox import DirectorySandbox
+
+
 def violation(*args):
     pass
+
 DirectorySandbox._old = DirectorySandbox._violation
 DirectorySandbox._violation = violation
 
 from distutils.command.build import build as _build
 from distutils.version import StrictVersion
+
 
 class node_bdist_egg(_bdist_egg):
 
@@ -43,8 +47,8 @@ class node_bdist_egg(_bdist_egg):
 
 class node_build(_build):
     env_dir = os.environ.get('VIRTUAL_ENV')
-    default_version = '0.8.11'
-    project_dir = os.environ.get('PROJECT_DIR', '')
+    default_version = os.getenv('NODE_VERSION', '0.10.26')
+    project_dir = os.getenv('PROJECT_DIR', '')
     verbose = False
 
     def get_node_version(self):

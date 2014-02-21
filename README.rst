@@ -10,7 +10,7 @@ Continuous integration status:
 
 This package is a wrapper around the `node.js`_ sources and provides a
 convenient way to install it directly into your ``virtualenv`` instead
-of globally. I created this package to play around with a simple 
+of globally. I created this package to play around with a simple
 installation for Django projects that use `django-compressor`_'s
 precompiler to generate CSS from `less`_ files.
 
@@ -42,12 +42,12 @@ Installing the ``node`` into your virtual environment is as easy as::
 
     $ pip install virtual-node
 
-If you had node.js installed globally previous to installing ``virtual-node``, 
-running ``npm`` or ``node`` will still point to your global installation. 
-To make sure you're using the newly installed ``node``, deactivate your 
+If you had node.js installed globally previous to installing ``virtual-node``,
+running ``npm`` or ``node`` will still point to your global installation.
+To make sure you're using the newly installed ``node``, deactivate your
 virtualenv and re-activate it.
 
-You can check that ``virtual-node`` has ``node`` pointing to the right place by 
+You can check that ``virtual-node`` has ``node`` pointing to the right place by
 running ``which node`` in your virtual environment:
 
     $ which node
@@ -64,11 +64,23 @@ Your output should look something like:
 Install specific version of ``node``
 ++++++++++++++++++++++++++++++++++++
 
-Starting with version **0.0.3** it is possible to specify the version of
-``node`` using the ``NPM`` packaging format ``package.json``. To use this
-feature you need to specify the current project directory in the environment
-variable ``PROJECT_DIR`` **before** you install ``virtual-node``. You can
-simply export it on the commandline::
+Version **0.1.0** add support for the environmental variable ``NODE_VERSION``
+that make it possible to specify the node version to be installed. If you want
+to install version ``0.10.0``, simply set ``NODE_VERSION=0.10.0`` and run ``pip
+install`` afterwards::
+
+    $ export NODE_VERSION=0.10.0
+    $ pip install virtual-node
+
+or even just::
+
+    $ NODE_VERSION=0.10.0 pip install virtual-node
+
+In addition,it is possible to specify the version of ``node`` using the
+``NPM`` packaging format ``package.json`` (support added in version **0.0.3**).
+To use this feature you need to specify the current project directory in the
+environment variable ``PROJECT_DIR`` **before** you install ``virtual-node``.
+You can simply export it on the commandline::
 
     $ export PROJECT_DIR=/path/to/my/project
 
