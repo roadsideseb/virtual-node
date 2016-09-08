@@ -228,6 +228,12 @@ class node_build(_build):
 
         logger.info('.', extra=dict(continued=True))
 
+        if sys.version_info > (3,):
+            cmd = ['2to3', '-w', '--no-diffs',
+                   'configure',
+                   'tools']
+            self.run_cmd(cmd, node_src_dir)
+
         conf_cmd = [
             './configure',
             '--prefix=%s' % (env_dir),
