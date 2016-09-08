@@ -4,7 +4,8 @@
 import os
 import sys
 import json
-import urllib
+#import urllib
+from six.moves.urllib.request import urlretrieve
 import tarfile
 import logging
 import subprocess
@@ -209,7 +210,7 @@ class node_build(_build):
             os.makedirs(node_src_dir)
 
         try:
-            filename, __ = urllib.urlretrieve(node_url)
+            filename, __ = urlretrieve(node_url)
         except IOError:
             raise IOError(
                 "cannot download node source from '%s'" % (node_url,)
